@@ -5,7 +5,7 @@ const port=8080;
 const Listing=require("./models/listing.js");
 const path= require("path");
 const methodOverride= require("method-override");
-
+const ejsMate = require("ejs-mate"); 
 const MONGO_URL='mongodb://127.0.0.1:27017/Wanderlust'
 
 main().then(()=>console.log("connected to DB"))
@@ -19,10 +19,11 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
-
+app.engine("ejs", ejsMate);
 app.get("/",(req,res)=>{
     res.send("root is working");
 });
+app.use(express.static(path.join(__dirname,"/public")));
 
 //index Route
 app.get("/listings", async (req,res)=>{
